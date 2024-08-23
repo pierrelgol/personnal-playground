@@ -1,0 +1,17 @@
+.{
+    .name = "DoomNukemGLFW3D",
+    .version = "0.0.0",
+    .dependencies = .{
+        .@"mach-glfw"= .{
+            .path = "mach-glfw/",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+        // For example...
+        //"LICENSE",
+        //"README.md",
+    },
+}
