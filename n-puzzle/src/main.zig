@@ -9,6 +9,12 @@ const Allocator = mem.Allocator;
 const ArgIterator = process.ArgIterator;
 const Parser = @import("parser.zig").Parser;
 const puz = @import("puzzle.zig");
+const search = @import("search.zig");
+const NodePool = @import("node.zig").AstarNodePoolUnmanaged;
+
+comptime {
+    std.testing.refAllDeclsRecursive(Parser);
+}
 
 pub fn main() !void {
     const page_allocator = heap.page_allocator;
@@ -71,4 +77,7 @@ pub fn main() !void {
     };
     defer config.deinit(allocator);
     try config.display();
+
+    const node = NodePool(u8).AstarNode.init('a', null);
+    std.debug.print("{}", .{node});
 }

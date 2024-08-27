@@ -27,6 +27,13 @@ pub const Puzzle = packed struct {
     var len: usize = 0;
     state: []u8,
 
+    pub const Transition = enum {
+        up,
+        down,
+        left,
+        right,
+    };
+
     pub inline fn init(state: []u8, dimension: usize) Puzzle {
         len = dimension;
         return .{

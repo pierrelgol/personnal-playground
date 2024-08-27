@@ -147,3 +147,18 @@ pub const Parser = struct {
         }
     }
 };
+
+const table = @import("inputs.zig").input_table;
+
+test "random number" {
+    const allocator = std.testing.allocator;
+    const inputs = std.testing.fuzzInput(.{ .corpus = table });
+    const buffer: []u8 = try allocator.dupe(u8, inputs);
+    defer allocator.free(buffer);
+    const config = Parser.init(allocator, buffer) catch Parser{
+        .dimension = 0,
+        .current = undefined,
+        .target = undefined,
+    };
+    _ = config;
+}
