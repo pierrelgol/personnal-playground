@@ -10,7 +10,7 @@ const ArgIterator = process.ArgIterator;
 const Parser = @import("parser.zig").Parser;
 const puz = @import("puzzle.zig");
 const search = @import("search.zig");
-const NodePool = @import("node.zig").AstarNodePoolUnmanaged;
+const NodePool = @import("node.zig").AstarNodePool;
 
 comptime {
     std.testing.refAllDeclsRecursive(Parser);
@@ -78,6 +78,6 @@ pub fn main() !void {
     defer config.deinit(allocator);
     try config.display();
 
-    const node = NodePool(u8).AstarNode.init('a', null);
+    const node = NodePool(u8, 1024).AstarNode.init('a');
     std.debug.print("{}", .{node});
 }

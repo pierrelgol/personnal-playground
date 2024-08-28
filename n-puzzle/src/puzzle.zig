@@ -20,8 +20,6 @@ const AllocatorError = mem.Allocator.Error;
 const Allocator = mem.Allocator;
 const ArgIterator = process.ArgIterator;
 const Parser = @import("parser.zig").Parser;
-const Trie = @import("trie.zig").Trie;
-const TrieNode = @import("trie.zig").TrieNode;
 
 pub const Puzzle = packed struct {
     var len: usize = 0;

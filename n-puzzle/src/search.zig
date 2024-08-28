@@ -21,8 +21,6 @@ const Allocator = mem.Allocator;
 const ArgIterator = process.ArgIterator;
 const Parser = @import("parser.zig").Parser;
 const Puzzle = @import("puzzle.zig").Puzzle;
-const Trie = @import("trie.zig").Trie;
-const TrieNode = @import("trie.zig").TrieNode;
 const Thread = std.Thread;
 const ThreadPool = Thread.Pool;
 const Order = std.math.Order;
@@ -33,18 +31,19 @@ pub fn Astar(
     comptime T: type,
     comptime context: anytype,
     comptime compare: fn (context: anytype, a: T, b: T) Order,
+    comptime max_load_percentage: u64,
 ) type {
     return struct {
         const Self = @This();
         allocator: Allocator,
         open_set: PriorityQueue(T, context, compare),
-        close_set: HashSet([]u8, T, context, 70),
+        close_set: HashSet([]u8, T, context, max_load_percentage),
 
         pub fn init(allocator: Allocator) Self {
             return .{
                 .allocator = allocator,
                 .open_set = PriorityQueue(T, context, compare).init(allocator, context),
-                .close_set = HashSet([]u8, T, context, 70).init(allocator),
+                .close_set = HashSet([]u8, T, context, max_load_percentage).init(allocator),
             };
         }
 
