@@ -29,6 +29,58 @@ const SegmentedList = std.SegmentedList;
 const ThreadPool = std.Thread.Pool;
 const Thread = std.Thread;
 
+pub const ZobristHash = struct {
+    const Self = @This();
+    table: [][]u8,
+
+    pub fn init(random: *std.Random.DefaultPrng, allocator: Allocator, N: usize) !Self {
+        var table = try ArrayList([]u8).initCapacity(allocator, N);
+
+        for (0..N) |_| {
+            var row = try ArrayList(u8).initCapacity(allocator, N);
+            for (0..N) |_| {
+                const item: u8 = @truncate(@mod(random.next(), N));
+                row.appendAssumeCapacity(item);
+            }
+            table.append(row.toOwnedSlice());
+        }
+        return .{
+            .table = try table.toOwnedSlice(),
+        };
+    }
+
+    pub fn hash(zobrist_hash: *const Self, key: []u8) u64 {
+        var result: u64 = 0;
+        for (0..key.len) |i| {
+            result ^= zobrist_hash.table[i][key[i]];
+        }
+        return (result);
+    }
+
+    pub fn deinit(zobrist_hash: Self, allocator: Allocator) void {
+        for (zobrist_hash.table) |*col| {
+            allocator.free(col);
+        }
+    }
+};
+
+pub const AstarCtx = struct {
+    const Self = @This();
+    hashing: ZobristHash,
+    allocator: Allocator,
+
+    pub fn init(allocator: Allocator, N: usize) !Self {
+        var rng = std.Random.DefaultPrng.init(0);
+        return .{
+            .hashing = try ZobristHash.init(&rng, allocator, N),
+            .allocator = allocator,
+        };
+    }
+
+    // pub fn hash(self: Self, item: T) u64 {
+    // }
+};
+
 pub fn AstarNode(comptime T: type) type {
     return struct {
         const Node = @This();
