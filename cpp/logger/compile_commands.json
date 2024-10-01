@@ -1,0 +1,22 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/c++",
+      "-std=c++98",
+      "-Wall",
+      "-Werror",
+      "-Wextra",
+      "-fsanitize=address",
+      "-fsanitize=undefined",
+      "-fsanitize=null",
+      "-I./include",
+      "-c",
+      "-o",
+      "src/main.o",
+      "src/main.cpp"
+    ],
+    "directory": "/home/pollivie/workspace/personnal-playground/cpp",
+    "file": "/home/pollivie/workspace/personnal-playground/cpp/src/main.cpp",
+    "output": "/home/pollivie/workspace/personnal-playground/cpp/src/main.o"
+  }
+]
