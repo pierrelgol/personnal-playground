@@ -65,8 +65,4 @@ pub const Puzzle = packed struct {
             total_distance += distance;
         }
     }
-
-    pub fn memoize(puzzle: *const Puzzle, root: *Trie) !void {
-        try root.insert(puzzle.state);
-    }
 };
